@@ -1,167 +1,8 @@
-Version 3.2.0
+Version 2.3.0
 -------------
 
 Unreleased
 
--   Drop support for Python 3.9. :pr:`5730`
--   Remove previously deprecated code: ``__version__``. :pr:`5648`
--   ``RequestContext`` has merged with ``AppContext``. ``RequestContext`` is now
-    a deprecated alias. If an app context is already pushed, it is not reused
-    when dispatching a request. This greatly simplifies the internal code for tracking
-    the active context. :issue:`5639`
--   Many ``Flask`` methods involved in request dispatch now take the current
-    ``AppContext`` as the first parameter, instead of using the proxy objects.
-    If subclasses were overriding these methods, the old signature is detected,
-    shows a deprecation warning, and will continue to work during the
-    deprecation period. :issue:`5815`
--   ``template_filter``, ``template_test``, and ``template_global`` decorators
-    can be used without parentheses. :issue:`5729`
-
-
-Version 3.1.2
--------------
-
-Released 2025-08-19
-
--   ``stream_with_context`` does not fail inside async views. :issue:`5774`
--   When using ``follow_redirects`` in the test client, the final state
-    of ``session`` is correct. :issue:`5786`
--   Relax type hint for passing bytes IO to ``send_file``. :issue:`5776`
-
-
-Version 3.1.1
--------------
-
-Released 2025-05-13
-
--   Fix signing key selection order when key rotation is enabled via
-    ``SECRET_KEY_FALLBACKS``. :ghsa:`4grg-w6v8-c28g`
--   Fix type hint for ``cli_runner.invoke``. :issue:`5645`
--   ``flask --help`` loads the app and plugins first to make sure all commands
-    are shown. :issue:`5673`
--   Mark sans-io base class as being able to handle views that return
-    ``AsyncIterable``. This is not accurate for Flask, but makes typing easier
-    for Quart. :pr:`5659`
-
-
-Version 3.1.0
--------------
-
-Released 2024-11-13
-
--   Drop support for Python 3.8. :pr:`5623`
--   Update minimum dependency versions to latest feature releases.
-    Werkzeug >= 3.1, ItsDangerous >= 2.2, Blinker >= 1.9. :pr:`5624,5633`
--   Provide a configuration option to control automatic option
-    responses. :pr:`5496`
--   ``Flask.open_resource``/``open_instance_resource`` and
-    ``Blueprint.open_resource`` take an ``encoding`` parameter to use when
-    opening in text mode. It defaults to ``utf-8``. :issue:`5504`
--   ``Request.max_content_length`` can be customized per-request instead of only
-    through the ``MAX_CONTENT_LENGTH`` config. Added
-    ``MAX_FORM_MEMORY_SIZE`` and ``MAX_FORM_PARTS`` config. Added documentation
-    about resource limits to the security page. :issue:`5625`
--   Add support for the ``Partitioned`` cookie attribute (CHIPS), with the
-    ``SESSION_COOKIE_PARTITIONED`` config. :issue:`5472`
--   ``-e path`` takes precedence over default ``.env`` and ``.flaskenv`` files.
-    ``load_dotenv`` loads default files in addition to a path unless
-    ``load_defaults=False`` is passed. :issue:`5628`
--   Support key rotation with the ``SECRET_KEY_FALLBACKS`` config, a list of old
-    secret keys that can still be used for unsigning. Extensions will need to
-    add support. :issue:`5621`
--   Fix how setting ``host_matching=True`` or ``subdomain_matching=False``
-    interacts with ``SERVER_NAME``. Setting ``SERVER_NAME`` no longer restricts
-    requests to only that domain. :issue:`5553`
--   ``Request.trusted_hosts`` is checked during routing, and can be set through
-    the ``TRUSTED_HOSTS`` config. :issue:`5636`
-
-
-Version 3.0.3
--------------
-
-Released 2024-04-07
-
--   The default ``hashlib.sha1`` may not be available in FIPS builds. Don't
-    access it at import time so the developer has time to change the default.
-    :issue:`5448`
--   Don't initialize the ``cli`` attribute in the sansio scaffold, but rather in
-    the ``Flask`` concrete class. :pr:`5270`
-
-
-Version 3.0.2
--------------
-
-Released 2024-02-03
-
--   Correct type for ``jinja_loader`` property. :issue:`5388`
--   Fix error with ``--extra-files`` and ``--exclude-patterns`` CLI options.
-    :issue:`5391`
-
-
-Version 3.0.1
--------------
-
-Released 2024-01-18
-
--   Correct type for ``path`` argument to ``send_file``. :issue:`5336`
--   Fix a typo in an error message for the ``flask run --key`` option. :pr:`5344`
--   Session data is untagged without relying on the built-in ``json.loads``
-    ``object_hook``. This allows other JSON providers that don't implement that.
-    :issue:`5381`
--   Address more type findings when using mypy strict mode. :pr:`5383`
-
-
-Version 3.0.0
--------------
-
-Released 2023-09-30
-
--   Remove previously deprecated code. :pr:`5223`
--   Deprecate the ``__version__`` attribute. Use feature detection, or
-    ``importlib.metadata.version("flask")``, instead. :issue:`5230`
--   Restructure the code such that the Flask (app) and Blueprint
-    classes have Sans-IO bases. :pr:`5127`
--   Allow self as an argument to url_for. :pr:`5264`
--   Require Werkzeug >= 3.0.0.
-
-
-Version 2.3.3
--------------
-
-Released 2023-08-21
-
--   Python 3.12 compatibility.
--   Require Werkzeug >= 2.3.7.
--   Use ``flit_core`` instead of ``setuptools`` as build backend.
--   Refactor how an app's root and instance paths are determined. :issue:`5160`
-
-
-Version 2.3.2
--------------
-
-Released 2023-05-01
-
--   Set ``Vary: Cookie`` header when the session is accessed, modified, or refreshed.
--   Update Werkzeug requirement to >=2.3.3 to apply recent bug fixes.
-    :ghsa:`m2qf-hxjv-5gpq`
-
-
-Version 2.3.1
--------------
-
-Released 2023-04-25
-
--   Restore deprecated ``from flask import Markup``. :issue:`5084`
-
-
-Version 2.3.0
--------------
-
-Released 2023-04-25
-
--   Drop support for Python 3.7. :pr:`5072`
--   Update minimum requirements to the latest versions: Werkzeug>=2.3.0, Jinja2>3.1.2,
-    itsdangerous>=2.1.2, click>=8.1.3.
 -   Remove previously deprecated code. :pr:`4995`
 
     -   The ``push`` and ``pop`` methods of the deprecated ``_app_ctx_stack`` and
@@ -187,9 +28,6 @@ Released 2023-04-25
 -   The ``app.got_first_request`` property is deprecated. :pr:`4997`
 -   The ``locked_cached_property`` decorator is deprecated. Use a lock inside the
     decorated function if locking is needed. :issue:`4993`
--   Signals are always available. ``blinker>=1.6.2`` is a required dependency. The
-    ``signals_available`` attribute is deprecated. :issue:`5056`
--   Signals support ``async`` subscriber functions. :pr:`5049`
 -   Remove uses of locks that could cause requests to block each other very briefly.
     :issue:`4993`
 -   Use modern packaging metadata with ``pyproject.toml`` instead of ``setup.cfg``.
@@ -197,32 +35,6 @@ Released 2023-04-25
 -   Ensure subdomains are applied with nested blueprints. :issue:`4834`
 -   ``config.from_file`` can use ``text=False`` to indicate that the parser wants a
     binary file instead. :issue:`4989`
--   If a blueprint is created with an empty name it raises a ``ValueError``.
-    :issue:`5010`
--   ``SESSION_COOKIE_DOMAIN`` does not fall back to ``SERVER_NAME``. The default is not
-    to set the domain, which modern browsers interpret as an exact match rather than
-    a subdomain match. Warnings about ``localhost`` and IP addresses are also removed.
-    :issue:`5051`
--   The ``routes`` command shows each rule's ``subdomain`` or ``host`` when domain
-    matching is in use. :issue:`5004`
--   Use postponed evaluation of annotations. :pr:`5071`
-
-
-Version 2.2.5
--------------
-
-Released 2023-05-02
-
--   Update for compatibility with Werkzeug 2.3.3.
--   Set ``Vary: Cookie`` header when the session is accessed, modified, or refreshed.
-
-
-Version 2.2.4
--------------
-
-Released 2023-04-25
-
--   Update for compatibility with Werkzeug 2.3.
 
 
 Version 2.2.3
@@ -437,7 +249,7 @@ Released 2022-03-28
     or ``AppContext.g`` instead. :issue:`3898`
 -   ``copy_current_request_context`` can decorate async functions.
     :pr:`4303`
--   The CLI uses ``importlib.metadata`` instead of ``pkg_resources`` to
+-   The CLI uses ``importlib.metadata`` instead of ``setuptools`` to
     load command entry points. :issue:`4419`
 -   Overriding ``FlaskClient.open`` will not cause an error on redirect.
     :issue:`3396`
@@ -914,7 +726,7 @@ Released 2018-04-26
     explicitly for each exception if you want to avoid traversing the
     MRO. :pr:`2362`
 -   Fix incorrect JSON encoding of aware, non-UTC datetimes. :pr:`2374`
--   Template auto reloading will honor debug mode even if
+-   Template auto reloading will honor debug mode even even if
     ``Flask.jinja_env`` was already accessed. :pr:`2373`
 -   The following old deprecated code was removed. :issue:`2385`
 
@@ -1396,7 +1208,7 @@ Released 2011-09-29, codename Rakija
     of Flask itself and no longer of the test client. This cleaned up
     some internal logic and lowers the odds of runaway request contexts
     in unittests.
--   Fixed the Jinja environment's ``list_templates`` method not
+-   Fixed the Jinja2 environment's ``list_templates`` method not
     returning the correct names when blueprints or modules were
     involved.
 
@@ -1482,7 +1294,7 @@ Released 2010-12-31
 
 -   Fixed an issue where the default ``OPTIONS`` response was not
     exposing all valid methods in the ``Allow`` header.
--   Jinja template loading syntax now allows "./" in front of a
+-   Jinja2 template loading syntax now allows "./" in front of a
     template load path. Previously this caused issues with module
     setups.
 -   Fixed an issue where the subdomain setting for modules was ignored

@@ -1,5 +1,6 @@
 import json
 import os
+import textwrap
 
 import pytest
 
@@ -241,10 +242,17 @@ def test_get_namespace():
 
 
 @pytest.mark.parametrize("encoding", ["utf-8", "iso-8859-15", "latin-1"])
-def test_from_pyfile_weird_encoding(tmp_path, encoding):
-    f = tmp_path / "my_config.py"
-    f.write_text(f'# -*- coding: {encoding} -*-\nTEST_VALUE = "föö"\n', encoding)
+def test_from_pyfile_weird_encoding(tmpdir, encoding):
+    f = tmpdir.join("my_config.py")
+    f.write_binary(
+        textwrap.dedent(
+            f"""
+            # -*- coding: {encoding} -*-
+            TEST_VALUE = "föö"
+            """
+        ).encode(encoding)
+    )
     app = flask.Flask(__name__)
-    app.config.from_pyfile(os.fspath(f))
+    app.config.from_pyfile(str(f))
     value = app.config["TEST_VALUE"]
     assert value == "föö"
